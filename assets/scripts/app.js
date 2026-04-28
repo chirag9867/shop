@@ -19,7 +19,7 @@ class ProductItem {
     }
 
     addToCart(){
-        console.log(`Product ${this.product.title} is added to cart`);
+        App.addProductToCart(this.product);
     }
 
     render(){
@@ -118,11 +118,20 @@ class Shop{
 
 
 class App {
+    static cart;
+    
     static init(){
         const shop = new Shop();
         shop.render();
+        this.cart = shop.cart;
 
     }
+
+    static addProductToCart(product){
+        this.cart.addProduct(product); 
+    }
+
+
 }
 
 App.init();
