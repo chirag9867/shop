@@ -20,6 +20,8 @@ class ProductItem {
 
     addToCart(){
         App.addProductToCart(this.product);
+        console.log(`${this.product.title} is added to the cart for ${this.product.price}`);
+        
     }
 
     render(){
@@ -119,7 +121,7 @@ class Shop{
 
 class App {
     static cart;
-    
+
     static init(){
         const shop = new Shop();
         shop.render();
