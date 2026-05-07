@@ -21,7 +21,7 @@ class ProductItem {
     addToCart(){
         App.addProductToCart(this.product);
         console.log(`${this.product.title} is added to the cart for ${this.product.price}`);
-        
+
     }
 
     render(){
@@ -48,9 +48,24 @@ class ProductItem {
 class ShopCart {
     items = [];
 
+    set cartItems(value){
+        this.items = value;
+        this.totalOutput.innerHTML = `<h2>Total Amount: Rs ${this.totalAmount.toFixed(2)}</h2>`;
+    }
+
+    get totalAmount() {
+        const sum = this.items.reduce((prevValue, currItem) => {
+            return prevValue + currItem.price;
+        }, 0);
+        return sum
+    }
+
     addProduct(product){
-        this.items.push(product);
-        this.totalOutput.innerHTML = `<h2>Total Amount: Rs ${1}</h2>`;
+        //this.items.push(product);
+
+        const updatedItems = [...this.items]
+        updatedItems.push(product);
+        this.cartItems = updatedItems;
     }
 
     render(){
@@ -126,7 +141,6 @@ class App {
         const shop = new Shop();
         shop.render();
         this.cart = shop.cart;
-
     }
 
     static addProductToCart(product){
