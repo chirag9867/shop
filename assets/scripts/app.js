@@ -44,8 +44,34 @@ class ProductItem {
     }
     
 }
+class ElementAttributr{
+    constructor(attrName, attrValue){
+        this.name = attrName;
+        this.value = attrValue;
+    }
+}
 
-class ShopCart {
+class Component {
+    constructor(renderHookId){
+        this.hookId = renderHookId;
+    }
+    createRootElement(tag, cssClasses, attributes){
+        const rootElement = document.createElement(tag);
+        if(cssClasses){
+            rootElement.className = cssClasses;
+        }
+        if(attributes && attributes.length > 0){
+            for(const attr of attributes){
+                rootElement.setAttribute(attr.name, attr.value);
+            }
+        }
+        document.getElementById(this.hookId).append(rootElement);
+        return rootElement;
+
+    }
+}
+
+class ShopCart extends Component{
     items = [];
 
     set cartItems(value){
@@ -60,6 +86,10 @@ class ShopCart {
         return sum
     }
 
+    constructor(renderHookId) {
+        super(renderHookId); //
+    }
+
     addProduct(product){
         //this.items.push(product);
 
@@ -69,15 +99,14 @@ class ShopCart {
     }
 
     render(){
-        const cartEl = document.createElement('section');
+        //const cartEl = document.createElement('section');
+        const cartEl = this.createRootElement('section', 'cart');
         cartEl.innerHTML = `
         <h2>Total Amount: Rs ${0}</h2>
         <button>Order Now</button>
         `;
-        cartEl.className = 'cart';
+        //cartEl.className = 'cart';
         this.totalOutput = cartEl.querySelector('h2');
-        console.log(this.items);
-        return cartEl;
 
     }
 }
@@ -122,12 +151,13 @@ class Shop{
     render(){
         const renderHook = document.getElementById('app');
         
-        this.cart = new ShopCart();
-        const cartEl = this.cart.render();
+        this.cart = new ShopCart('app');
+        //const cartEl = this.cart.render();
+        this.cart.render();
         const productList = new ProductList();
         const prodListEl = productList.render();
 
-        renderHook.append(cartEl);
+        //renderHook.append(cartEl);
         renderHook.append(prodListEl);
 
     }
